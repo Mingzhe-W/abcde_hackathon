@@ -83,46 +83,46 @@ def demo_main():
     num_cards = int(input("input your number of cards used: "))
     my_deck  = deck(int(num_cards))
 
-    # print("open cards value ciphertext: ")
-    # for card in my_deck._cards:
-    #     print(card._value)
+    print("open cards value ciphertext: ")
+    for card in my_deck._cards:
+        print(card._value)
 
-    # print("open cards ciphertext: ")
-    # for card in my_deck._cards:
-    #     # TODO make it more compact
-    #     print(card._value)
-
-    
-    # card_num = input("input a card index for verification: ")
-    
-    # chosen_card = my_deck._cards[int(card_num)]
-    # print("open card ciphertext for the chosen card:", chosen_card._value)
-
-    # chosen_card.decrypt(0,1)
-    # print("open card value plaint text for the chosen card",chosen_card._value)
-
-    # chosen_card.encrypt(0,1)
+    print("open cards ciphertext: ")
+    for card in my_deck._cards:
+        # TODO make it more compact
+        print(card._value)
 
     
-    # player_idx  = int(input("input your player idx"))
-    # card_idx  = int(input("input your card idx"))
+    card_num = input("input a card index for verification: ")
+    
+    chosen_card = my_deck._cards[int(card_num)]
+    print("open card ciphertext for the chosen card:", chosen_card._value)
 
-    # p_chosen = players[player_idx]
+    chosen_card.decrypt(0,1)
+    print("open card value plaint text for the chosen card",chosen_card._value)
 
-    # chosen_card = my_deck._cards[card_idx]
+    chosen_card.encrypt(0,1)
 
-    # r = 314 #TODO r should be a strong random
-    # # write to a json file for circom input
+    
+    player_idx  = int(input("input your player idx"))
+    card_idx  = int(input("input your card idx"))
+
+    p_chosen = players[player_idx]
+
+    chosen_card = my_deck._cards[card_idx]
+
+    r = 314 #TODO r should be a strong random
+    # write to a json file for circom input
 
 
     
     
-    # cipher_card, zkp = chosen_card.mask(pk, r)
+    cipher_card, zkp = chosen_card.mask(pk, r)
 
-    # print("the masked card is: ")
-    # print(cipher_card)
-    # print("and the corresponding zkp is :")
-    # print(zkp)
+    print("the masked card is: ")
+    print(cipher_card)
+    print("and the corresponding zkp is :")
+    print(zkp)
 
 
 ## shuffle demo
