@@ -154,9 +154,9 @@ JUBJUB_COFACTOR = Fr(8)
 
 
 
-# Fq.ZERO = Fq(0)
-# Fq.ONE = Fq(1)
-# Fq.MINUS_ONE = Fq(-1)
+Fq.ZERO = Fq(0)
+Fq.ONE = Fq(1)
+Fq.MINUS_ONE = Fq(-1)
 
 # assert Fq.ZERO + Fq.ZERO == Fq.ZERO
 # assert Fq.ZERO + Fq.ONE == Fq.ONE
@@ -203,6 +203,7 @@ class Point(object):
         self.u = u
         self.v = v
 
+
     def __add__(self, a):
         (u1, v1) = (self.u, self.v)
         (u2, v2) = (a.u, a.v)
@@ -213,6 +214,7 @@ class Point(object):
 
     def double(self):
         return self + self
+    
 
     def __mul__(self, s):
         # something weird is happenign here. When it ry to format int
@@ -255,7 +257,7 @@ class Point(object):
 
 
 
-# Point.ZERO = Point(Fq.ZERO, Fq.ONE)
+Point.ZERO = Point(Fq.ZERO, Fq.ONE)
 
 # assert Point.ZERO + Point.ZERO == Point.ZERO
 
