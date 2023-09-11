@@ -208,4 +208,42 @@ def demo_main():
    
 
 
-demo_main()
+# demo_main()
+
+
+if __name__ == '__main__':
+    player_amount = int(input("please input the number of players:"))
+    players = []
+    for i in range(player_amount):
+        players.append(player(key_gen()))
+    card_amount = int(input("please input the number of players:"))
+    my_deck = deck(int(card_amount))
+    print("open cards value ciphertext: ")
+    for card in my_deck.cards:
+        print(card.value)
+    print("open cards ciphertext: ")
+    for card in my_deck._cards:
+        # TODO make it more compact
+        print(card._value)
+    while True:
+        print("Available commands:\n1.encrypt(self, String pk, int r)\n" +
+              "2.decrypt(self, String sk, int r)\n" +
+              "3.mask_a_card(self, String pk, int r)")
+        print("format: number paras")
+        cmd_ipt = input("which command do you want to run? q for quit\n")
+        cmd = cmd_ipt.split()
+        match cmd[0]:
+            case "q":
+                break
+            case "1":
+                index = int(input("input a card index for verification: "))
+                my_deck.cards[index].encrypt(cmd[1], int(cmd[2]))
+            case "2":
+                index = int(input("input a card index for verification: "))
+                my_deck._cards[int(index)].decrypt(cmd[1], int(cmd[2]))
+            case "3":
+                pass
+            case _:
+                print("non-existent command")
+        print()
+        
