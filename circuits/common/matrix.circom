@@ -16,3 +16,16 @@ template matrixMultiplication(m, n) {
         B[i] <== lc;
     }
 }
+
+template matrixSplit(n){
+    signal input beforeSplit[n];
+    signal input x;
+    signal output afterSplit[n];
+    for (var i = 0; i < n - x; i++) {
+        afterSplit[i] <== beforeSplit[x + i];
+    }
+    for (var i = 0; i < x; i++) {
+        afterSplit[n - x + i] <== beforeSplit[i];
+    }
+
+}

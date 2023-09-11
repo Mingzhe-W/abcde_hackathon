@@ -19,9 +19,9 @@ pragma circom 2.0.0;
 include "../common/babyjubjub.circom";
 include "../common/elgamal.circom";
 include "../common/matrix.circom";
-include "../../node_modules/circomlib/circuits/bitify.circom";
+include "../node_modules/circomlib/circuits/bitify.circom";
 
-template MaskAnOpenCard(base, numBits){
+template MaskAnOpenCard(numBits){
 
     signal input ic0[2];                // c0, a card waited to be masked, group element on inner curve
     signal input ic1[2];                // c1, a card waited to be masked, group element on inner curve
@@ -50,13 +50,4 @@ template MaskAnOpenCard(base, numBits){
     c1[0] <== elgamal.c1[0];
     c1[1] <== elgamal.c1[1];
 }
-
-
-
-
-
-
-
-
-
-}
+component main {public [pk, ic0, ic1, r]}  = MaskAnOpenCard(254);
