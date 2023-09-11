@@ -3,9 +3,15 @@
  * sk_all = sk_A + sk_B + sk_C
  * pk = sk_all *g
 
- * Mask ElGamal:
- * c = E_pk(m, r) = (r*g, m + r*pk) = (initc0, initc1)
- * when init a open card, r = 1, so c = E_pk(m, 1) = (g, m+pk)
+ * create a open card:
+ * r = 1
+ * c = E_pk(m, 1) = (g, m+pk)
+
+ * ElGamalEncrypt:
+ * c0 = r * g + ic0
+ * c1 = r * pk + ic1
+ * ic0 = 0
+ * ic1 = m
 */
 
 pragma circom 2.0.0;
@@ -15,6 +21,9 @@ include "../common/elgamal.circom";
 include "../common/matrix.circom";
 include "../../node_modules/circomlib/circuits/bitify.circom";
 
+/// input m: card value, group element on inner curve
+/// input pk: public key, pk = (sk_A + sk_B + sk_C) * g, group element on inner curve
+/// output open card: (c0, c1)
 template MaskAnOpenCard(base, numBits){
     signal input m[2];                  //card value, group element on inner curve
     signal input pk[2];                 //public key, pk = (sk_A + sk_B + sk_C) * g, group element on inner curve
@@ -41,14 +50,4 @@ template MaskAnOpenCard(base, numBits){
     c0[1] <== elgamal.c0[1];
     c1[0] <== elgamal.c1[0];
     c1[1] <== elgamal.c1[1];
-}
-
-
-
-
-
-
-
-
-
 }

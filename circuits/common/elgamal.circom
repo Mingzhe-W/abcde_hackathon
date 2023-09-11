@@ -1,18 +1,23 @@
 /*
  * Note:
- * sk = sk_A + sk_B + sk_C
- * pk = sk*g
+ * sk_all = sk_A + sk_B + sk_C
+ * pk = sk_all *g
 
- * Init:
- * (0, m)
- * Alice Encrypt:
- * (a*g, m + a*pk)
- * Bob Encrypt:
- * ((a+b)*g, m + (a+b)*pk)
- * Charlie Encrypt:
- * ((a+b+c)*g, m + (a+b+c)*pk)
+ * Mask ElGamal:
+ * c = E_pk(m, r) = (r*g, m + r*pk) = (initc0, initc1)
+ * when init a open card, r = 1, so c = E_pk(m, 1) = (g, m+pk)
+
+ * remask ElGamel:
+ * Init: (initc0, initc1)
+ * Alice Encrypt: r = a
+ * (c0[1], c1[1]) = (a*g + initc0, m + a*pk + initc1) = ((a+1)*g, m+(a+1)*pk)
+ * Bob Encrypt: r = b
+ * (c0[2], c1[2]) = (b*g + c0[1], m + b*pk + c1[1]) = ((a+b+1)*g, m+(a+b+1)*pk)
+ * Charlie Encrypt: r = c
+ * (c0[3], c1[3]) = (c*g + c0[2], m + c*pk + c1[2]) = ((a+b+c+1)*g, m+(a+b+c+1)*pk)
+
  * Bob Decrypt:
- * m+(a+b+c)*pk - sk_B*(a+b+c)*g
+ * m+(a+b+c+1)*pk - sk_B*(a+b+c+1)*g
  * ...
 */
 
