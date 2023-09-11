@@ -1,0 +1,23 @@
+import os, subprocess
+
+os.system("snarkjs powersoftau new bn128 14 pot14_0000.ptau -v")
+os.system('snarkjs powersoftau contribute pot14_0000.ptau pot14_0001.ptau --name="First contribution" -v')
+os.system('snarkjs powersoftau contribute pot14_0001.ptau pot14_0002.ptau --name="Second contribution" -v -e="some random text"')
+os.system('snarkjs powersoftau contribute pot14_0001.ptau pot14_0002.ptau --name="Second contribution" -v -e="some random text"')
+os.system('snarkjs powersoftau export challenge pot14_0002.ptau challenge_0003')
+os.system('snarkjs powersoftau challenge contribute bn128 challenge_0003 response_0003 -e="some random text"')
+os.system('snarkjs powersoftau import response pot14_0002.ptau response_0003 pot14_0003.ptau -n="Third contribution name"')
+os.system('snarkjs powersoftau verify pot14_0003.ptau')
+os.system('snarkjs powersoftau beacon pot14_0003.ptau pot14_beacon.ptau 0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f 10 -n="Final Beacon"')
+os.system('snarkjs powersoftau prepare phase2 pot14_beacon.ptau pot14_final.ptau -v')
+os.system('snarkjs powersoftau verify pot14_final.ptau')
+
+os.system("circom mask_encrypt.circom --r1cs --wasm --sym --c -l ../node_modules/circomlib")
+os.system(r'echo "{\"pk\":[0,0], \"ic0\":[0,0], \"ic1\":[0,0], \"r\": 2}" >> input.json')
+os.system("node mask_encrypt_js/generate_witness.js  mask_encrypt_js/mask_encrypt.wasm input.json witness.wtns")
+os.system("snarkjs wtns check mask_encrypt.r1cs witness.wtns")
+os.system("snarkjs plonk setup mask_encrypt.r1cs pot14_final.ptau circuit_final.zkey")
+os.system("snarkjs plonk prove circuit_final.zkey witness.wtns proof.json public.json")
+os.system("snarkjs zkey export verificationkey circuit_final.zkey verification_key.json")
+os.system("snarkjs plonk verify verification_key.json public.json proof.json")
+os.system("snarkjs zkey export solidityverifier circuit_final.zkey verifier.sol")

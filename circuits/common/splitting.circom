@@ -1,10 +1,8 @@
 pragma circom 2.0.0
 
-include 'boolean.circom'
-
-
 ///check if matrix 'in' is a splitting matrix 
-template checkSplittingMatri(x,n) {
+///x is the splitting point
+template Splitting(x,n) {
     signal input beforesplit[n*n];
     signal input aftersplit[n*n]
     signal out;
