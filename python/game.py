@@ -17,12 +17,19 @@ G = Point(Fq(5299619240641551281634865583518297030282874472190772894086521144482
 def key_gen():
     return Fq(random.randint(0,21888242871839275222246405745257275088548364400416034343698204186575808495617))
 
+def public_key(players):
+    # H is the public k for everyone
+    H = Point.ZERO
+    for player in players:
+        H += player._pk
+    return H
+
 
 
 class player:
     def __init__(self, sk):
         self._sk  = sk
-        self._pk = self._sk*G    
+        self._pk = G*self._sk
 
 
 class deck:
@@ -30,7 +37,7 @@ class deck:
         self._cards = []
         for i in range(num_cards):
             c = card(str(i))
-            c.create_an_open_card(0) ## TODO , change 0 to pk
+           # c.create_an_open_card(0) ## TODO , change 0 to pk
             self._cards.append(c)
 
         self._cards_order = np.array([i for i in range(num_cards)])
@@ -66,22 +73,25 @@ class deck:
 
 
 class card:
-    def __init__(self, value):
-        self._value = value
+    def __init__(self, M):
+        # value is the M is an element on baby jubjub 
+        self._value = [Point.ZERO, M]
         self._encrypted = 0
     
     def encrypt(self, pk, r):
-        # TODO implement this encryption
-
-        
-        self._value = self._value +"#"
-        self._encrypted +=1
+        r = Fq(r)
+        self._value[0] += G*r
+        self._value[1] += pk*r
+        self._encrypted += 1
     
-    def decrypt(self, sk, r):
-        self._value = self._value[:-1]
+    def decrypt(self, sk):
+        D =  self._value[0]*sk 
+        self._value[1] -= D
+        self._encrypted -= 1
 
-    def create_an_open_card(self, pk ):
-        self.encrypt(pk, 1) # open card definition, r = 1
+    def create_an_open_card(self, M ):
+        self._value = [Point.ZERO, M]
+        self._encrypted = 0 # open card definition, r = 1
 
     def mask_a_card(self, pk, r):
         self.encrypt(pk, r) #
@@ -215,9 +225,13 @@ def demo_main():
 
 if __name__ == '__main__':
     player_amount = int(input("please input the number of players:"))
+
     players = []
     for i in range(player_amount):
         players.append(player(key_gen()))
+
+    H = public_key(players)
+
     card_amount = int(input("please input the number of players:"))
     my_deck = deck(int(card_amount))
     print("open cards value ciphertext: ")
