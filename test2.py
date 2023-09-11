@@ -25,34 +25,6 @@ class deck:
             c.create_an_open_card(0) ## TODO , change 0 to pk
             self._cards.append(c)
 
-        self._cards_order = np.array([i for i in range(num_cards)])
-
-    def mask_shuffling(self, permutation_matrix, pk, r):
-        mask_zkp =  []
-        for card in self._cards:
-            _, zkp  =  card.mask_a_card(pk, r)
-            mask_zkp.append(zkp)
-
-
-        self._cards_order = permutation_matrix.dot(self._cards_order)
-        # write permutation and generate zkp with circom
-        zkp = 321
-        return mask_zkp, zkp
-
-
-    def mask_spliting(self,x, pk, r):
-        mask_zkp = []
-        for card in self._cards:
-            _, zkp = card.mask_a_card(pk,r)
-            mask_zkp.append(zkp)
-
-        self._cards_order = np.roll(self._cards_order, len(self._cards_order)- x)
-        
-
-
-        
-
-
 
 
 class card:
@@ -68,10 +40,11 @@ class card:
     def decrypt(self, sk, r):
         self._value = self._value[:-1]
 
+
     def create_an_open_card(self, pk ):
         self.encrypt(pk, 1) # open card definition, r = 1
 
-    def mask_a_card(self, pk, r):
+    def mask(self, pk, r):
         self.encrypt(pk, r) #
         # TODO 这里需要zkp 
         
@@ -80,29 +53,16 @@ class card:
         
         return self._value, zkp
 
-    def create_a_private_card(self, pk, r):
-        return
-    
-
-    
-
-
-
-
 
 
 
 def demo_main():
 
     #mapping = {}
-    
-
 
 
     n = input("enter the number of player: ")
     print(int(n))
-
-
 
     players = []
 
@@ -122,14 +82,6 @@ def demo_main():
 
     num_cards = int(input("input your number of cards used: "))
     my_deck  = deck(int(num_cards))
-
-
-
-
-    
-
-
-
 
     print("open cards value ciphertext: ")
     for card in my_deck._cards:
@@ -161,9 +113,11 @@ def demo_main():
 
     r = 314 #TODO r should be a strong random
     # write to a json file for circom input
+
+
     
     
-    cipher_card, zkp = chosen_card.mask_a_card(pk, r)
+    cipher_card, zkp = chosen_card.mask(pk, r)
 
     print("the masked card is: ")
     print(cipher_card)
@@ -176,25 +130,14 @@ def demo_main():
 
     A = np.identity(num_cards)
     A = np.random.permutation(A)
+    print(A)
 
-
-# TODO changge pk and r 
-    my_deck.mask_shuffling(permutation_matrix= A, pk= 0,r = 0)
+    np_deck =np.array( my_deck._cards)
     
+    out = A.dot(np_deck)
 
-    print(my_deck._cards_order)
-
-# TODO changge pk and r
-    my_deck.mask_spliting(4, pk= 0, r = 0)
-    print(my_deck._cards_order)
-    
-
-##
-
-
-
-
-        
+    print(out)
+      
    
 
 
