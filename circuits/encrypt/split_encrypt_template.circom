@@ -56,7 +56,7 @@ template SplitEcryptTemplate(base, numCards, numBits){
 
 }
 
-template ShuffleEncryptV2Template(base, numCards, numBits) {
+template SplitEncryptV2Template(base, numCards, numBits) {
     assert(numCards <= 253);
     signal input pk[2];                 // group element on inner curve
     signal input UX0[numCards];         // numCards x-coordinates of group elements on inner curve
@@ -108,9 +108,9 @@ template ShuffleEncryptV2Template(base, numCards, numBits) {
     }
 
     component splitEncryptV1 = SplitEcryptTemplate(base, numCards, numBits);
-    for(var i = 0; i < numCards*numCards; i++) {
-        splitEncryptV1.x <== x;
-    }
+
+    splitEncryptV1.x <== x;
+    
     for (var i = 0; i < numCards; i++) {
         splitEncryptV1.R[i] <== R[i];
     }
