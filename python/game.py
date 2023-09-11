@@ -14,12 +14,14 @@ G = Point(Fq(5299619240641551281634865583518297030282874472190772894086521144482
 # def key_gen(players)
 #     for player in players:
 
+def key_gen():
+    return Fq(random.randint(0,21888242871839275222246405745257275088548364400416034343698204186575808495617))
 
 
 
 class player:
     def __init__(self, sk):
-        self._sk  = Fq(random.randint(0,21888242871839275222246405745257275088548364400416034343698204186575808495617))
+        self._sk  = sk
         self._pk = self._sk*G    
 
 
@@ -246,4 +248,3 @@ if __name__ == '__main__':
             case _:
                 print("non-existent command")
         print()
-        
