@@ -137,19 +137,7 @@ def demo_main():
     out = A.dot(np_deck)
 
     print(out)
-
-
-    
-
-
-
-
-
-
-
-    
-
-        
+      
    
 
 
